@@ -1,5 +1,5 @@
 <script>
-import TodoCard from './TodoCard.vue'
+import TodoCard from './TodoItem.vue'
 
 export default {
   components: { TodoCard },

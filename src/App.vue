@@ -95,6 +95,11 @@ body {
   display: flex;
   justify-content: center;
   gap: 5px;
-  margin: 10px 0px;
+  margin: 40px 0px 10px;
+}
+
+.tabs-container button {
+  width: 20rem;
+  height: 40px;
 }
 </style>
