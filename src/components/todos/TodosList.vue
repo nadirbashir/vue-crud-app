@@ -1,9 +1,10 @@
 <script>
-import TodoCard from './TodoItem.vue'
+import TodoFilter from './TodoFilter.vue'
+import TodoItem from './TodoItem.vue'
 
 export default {
-  components: { TodoCard },
-  emits: ['update-todo', 'delete-todo'],
+  components: { TodoItem, TodoFilter },
+  emits: ['update-todo', 'delete-todo', 'filter-todos'],
   props: {
     todos: {
       type: Array,
@@ -13,10 +14,26 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       error: null,
-      todosList: this.$props.todos,
+      filters: {
+        title: '',
+        priorities: [],
+      },
     }
+  },
+
+  computed: {
+    filteredTodos() {
+      return this.todos.filter(({ title, priority }) => {
+        if (this.filters.priorities.length) {
+          return (
+            title.toLowerCase().includes(this.filters.title.toLowerCase()) &&
+            this.filters.priorities.includes(priority)
+          )
+        }
+        return title.toLowerCase().includes(this.filters.title.toLowerCase())
+      })
+    },
   },
 
   methods: {
@@ -26,21 +43,25 @@ export default {
     onUpdateTodo(updatedTodo) {
       this.$emit('update-todo', updatedTodo)
     },
+    setFilters(updatedFilters) {
+      this.filters = updatedFilters
+    },
   },
 }
 </script>
 
 <template>
-  <base-card v-if="!todosList.length">
+  <todo-filter @change-filter="setFilters"></todo-filter>
+  <base-card v-if="!filteredTodos.length">
     <h4>No Todos Found</h4>
   </base-card>
   <div v-else>
-    <todo-card
-      v-for="todo in todosList"
+    <todo-item
+      v-for="todo in filteredTodos"
       :key="todo.id"
       :todo="todo"
       @delete-todo="onDeleteTodo"
       @update-todo="onUpdateTodo"
-    ></todo-card>
+    ></todo-item>
   </div>
 </template>

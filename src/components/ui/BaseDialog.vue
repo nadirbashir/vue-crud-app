@@ -1,6 +1,10 @@
 <script>
 export default {
   props: {
+    show: {
+      type: Boolean,
+      required: true,
+    },
     title: {
       type: String,
       required: false,
@@ -11,34 +15,36 @@ export default {
 </script>
 
 <template>
-  <Teleport to="body">
-    <div @click="$emit('close')"></div>
-    <dialog open>
-      <header>
-        <slot name="header">
-          <h2>title</h2>
-        </slot>
-      </header>
-      <section>
-        <slot></slot>
-      </section>
-      <menu>
-        <slot name="actions">
-          <base-button @click="$emit('close')">Close</base-button>
-        </slot>
-      </menu>
-    </dialog>
-  </Teleport>
+  <teleport to="body">
+    <div v-if="show" @click="$emit('close')" class="backdrop"></div>
+    <transition name="">
+      <dialog open v-if="show">
+        <header>
+          <slot name="header">
+            <h2>{{ title }}</h2>
+          </slot>
+        </header>
+        <section>
+          <slot></slot>
+        </section>
+        <menu>
+          <slot name="actions">
+            <base-button @click="$emit('close')">Close</base-button>
+          </slot>
+        </menu>
+      </dialog>
+    </transition>
+  </teleport>
 </template>
 
 <style scoped>
-div {
+.backdrop {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   width: 100%;
-  background-color: #1d1d1d;
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
 }
 
@@ -54,10 +60,11 @@ dialog {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  background-color: white;
 }
 
 header {
-  background-color: #1d1d1d;
+  background-color: #171717;
   color: white;
   width: 100%;
   padding: 1rem;
@@ -69,6 +76,7 @@ header h2 {
 
 section {
   padding: 1rem;
+  color: #171717;
 }
 
 menu {
@@ -76,6 +84,26 @@ menu {
   display: flex;
   justify-content: flex-end;
   margin: 0;
+}
+
+.dialog-enter-from,
+.dialog-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.dialog-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.dialog-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.dialog-enter-to,
+.dialog-leave-from {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media (min-width: 768px) {

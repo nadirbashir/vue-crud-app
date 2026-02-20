@@ -14,14 +14,16 @@ export default {
       selectedTab: 'list-todos',
       todos: [
         {
-          id: Date.now(),
+          id: Date.now() - 1,
           title: 'Title 1',
           description: 'details here',
+          priority: 'MEDIUM',
         },
         {
           id: Date.now(),
           title: 'Title 2',
           description: 'details here 2',
+          priority: 'LOW',
         },
       ],
     }
@@ -37,6 +39,7 @@ export default {
       const todo = this.todos.find((item) => item.id === updatedTodo.id)
       todo.title = updatedTodo.title
       todo.description = updatedTodo.description
+      todo.priority = updatedTodo.priority
     },
     deleteTodo(todoId) {
       const index = this.todos.findIndex((item) => item.id === todoId)
