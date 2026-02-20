@@ -1,10 +1,10 @@
 <script>
+import { mapMutations } from 'vuex'
 import TodoForm from './TodoForm.vue'
 
 export default {
   components: { TodoForm },
   props: ['todo'],
-  emits: ['delete-todo', 'update-todo'],
   data() {
     return {
       isEditMode: false,
@@ -18,12 +18,10 @@ export default {
     setEditMode() {
       this.isEditMode = !this.isEditMode
     },
-    onUpdate(updatedTodo) {
-      this.$emit('update-todo', updatedTodo)
-    },
-    onDelete(todoId) {
-      this.$emit('delete-todo', todoId)
-    },
+    ...mapMutations('todos', {
+      updateTodo: 'updateTodo',
+      deleteTodo: 'deleteTodo',
+    }),
   },
 }
 </script>
@@ -44,7 +42,7 @@ export default {
     <template #actions>
       <div class="buttons-container">
         <base-button mode="outline" @click="setShowConfirmDelete(false)">Cancel</base-button>
-        <base-button @click="onDelete(todo.id)">Delete</base-button>
+        <base-button @click="deleteTodo(todo.id)">Delete</base-button>
       </div>
     </template>
   </base-dialog>
@@ -61,7 +59,7 @@ export default {
     v-else="isEditMode"
     :todo="todo"
     :closeEditMode="setEditMode"
-    @save-data="onUpdate"
+    @save-data="updateTodo"
   ></todo-form>
 </template>
 <style scoped>

@@ -5,8 +5,11 @@ import BaseButton from './components/ui/BaseButton.vue'
 import BaseCard from './components/ui/BaseCard.vue'
 import BaseDialog from './components/ui/BaseDialog.vue'
 import BaseBadge from './components/ui/BaseBadge.vue'
+import store from './store'
 
 const app = createApp(App)
+
+app.use(store)
 
 app.component('base-button', BaseButton)
 app.component('base-card', BaseCard)

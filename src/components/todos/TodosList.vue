@@ -4,14 +4,6 @@ import TodoItem from './TodoItem.vue'
 
 export default {
   components: { TodoItem, TodoFilter },
-  emits: ['update-todo', 'delete-todo', 'filter-todos'],
-  props: {
-    todos: {
-      type: Array,
-      required: true,
-      default: [],
-    },
-  },
   data() {
     return {
       error: null,
@@ -24,7 +16,7 @@ export default {
 
   computed: {
     filteredTodos() {
-      return this.todos.filter(({ title, priority }) => {
+      return this.$store.getters['todos/todosList'].filter(({ title, priority }) => {
         if (this.filters.priorities.length) {
           return (
             title.toLowerCase().includes(this.filters.title.toLowerCase()) &&
@@ -37,12 +29,6 @@ export default {
   },
 
   methods: {
-    onDeleteTodo(todoId) {
-      this.$emit('delete-todo', todoId)
-    },
-    onUpdateTodo(updatedTodo) {
-      this.$emit('update-todo', updatedTodo)
-    },
     setFilters(updatedFilters) {
       this.filters = updatedFilters
     },
@@ -55,13 +41,7 @@ export default {
   <base-card>
     <h4 v-if="!filteredTodos.length">No Todos Found</h4>
     <div v-else>
-      <todo-item
-        v-for="todo in filteredTodos"
-        :key="todo.id"
-        :todo="todo"
-        @delete-todo="onDeleteTodo"
-        @update-todo="onUpdateTodo"
-      ></todo-item>
+      <todo-item v-for="todo in filteredTodos" :key="todo.id" :todo="todo"></todo-item>
     </div>
   </base-card>
 </template>

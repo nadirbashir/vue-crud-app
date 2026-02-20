@@ -1,4 +1,5 @@
 <script>
+import { mapMutations } from 'vuex'
 import TheHeader from './components/layout/TheHeader.vue'
 import TodoForm from './components/todos/TodoForm.vue'
 import TodosList from './components/todos/TodosList.vue'
@@ -12,39 +13,13 @@ export default {
   data() {
     return {
       selectedTab: 'list-todos',
-      todos: [
-        {
-          id: Date.now() - 1,
-          title: 'Title 1',
-          description: 'details here',
-          priority: 'MEDIUM',
-        },
-        {
-          id: Date.now(),
-          title: 'Title 2',
-          description: 'details here 2',
-          priority: 'LOW',
-        },
-      ],
     }
   },
   methods: {
     setSelectedTab(tab) {
       this.selectedTab = tab
     },
-    addTodo(data) {
-      this.todos.push(data)
-    },
-    updateTodo(updatedTodo) {
-      const todo = this.todos.find((item) => item.id === updatedTodo.id)
-      todo.title = updatedTodo.title
-      todo.description = updatedTodo.description
-      todo.priority = updatedTodo.priority
-    },
-    deleteTodo(todoId) {
-      const index = this.todos.findIndex((item) => item.id === todoId)
-      this.todos.splice(index, 1)
-    },
+    ...mapMutations('todos', ['addTodo']),
   },
   computed: {
     todosTabMode() {
@@ -65,16 +40,8 @@ export default {
       <base-button @click="setSelectedTab('add-todo')" :mode="addTodoTabMode">Add Todo</base-button>
     </div>
     <div class="tab-content">
-      <todos-list
-        v-if="selectedTab === 'list-todos'"
-        :todos="this.todos"
-        @update-todo="updateTodo"
-        @delete-todo="deleteTodo"
-      ></todos-list>
-      <todo-form
-        v-show="selectedTab === 'add-todo'"
-        @save-data="(data) => addTodo(data)"
-      ></todo-form>
+      <todos-list v-if="selectedTab === 'list-todos'"></todos-list>
+      <todo-form v-show="selectedTab === 'add-todo'" @save-data="addTodo"></todo-form>
     </div>
   </div>
 </template>
