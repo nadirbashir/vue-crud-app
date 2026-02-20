@@ -22,18 +22,21 @@ export default {
 </script>
 
 <template>
-  <div></div>
-  <div class="filters-container">
-    <input type="text" v-model.trim="title" placeholder="Search by title" />
-    <input type="checkbox" id="high" name="priorities" value="HIGH" v-model="priorities" />
-    <label for="high">High</label>
+  <base-card>
+    <div>Filters:</div>
+    <div class="filters-container">
+      <input type="text" v-model.trim="title" placeholder="Search by title" />
+      <span> Priority: </span>
+      <input type="checkbox" id="high" name="priorities" value="HIGH" v-model="priorities" />
+      <label for="high">High</label>
 
-    <input type="checkbox" id="medium" name="priorities" value="MEDIUM" v-model="priorities" />
-    <label for="medium">Medium</label>
+      <input type="checkbox" id="medium" name="priorities" value="MEDIUM" v-model="priorities" />
+      <label for="medium">Medium</label>
 
-    <input type="checkbox" id="low" name="priorities" value="LOW" v-model="priorities" />
-    <label for="low">Low</label>
-  </div>
+      <input type="checkbox" id="low" name="priorities" value="LOW" v-model="priorities" />
+      <label for="low">Low</label>
+    </div>
+  </base-card>
 </template>
 
 <style scoped>
@@ -43,6 +46,6 @@ export default {
   display: 'flex';
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 15px;
 }
 </style>

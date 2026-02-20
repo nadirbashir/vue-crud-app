@@ -99,7 +99,7 @@ export default {
           >Cancel</base-button
         >
         <base-button :disabled="isSaved" :class="isSaved ? 'disabled' : ''">Save</base-button>
-        <p v-if="isSaved">Todo Saved Successfully!</p>
+        <p v-show="isSaved">Todo Saved Successfully!</p>
       </div>
     </form>
   </base-card>

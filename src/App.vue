@@ -72,7 +72,7 @@ export default {
         @delete-todo="deleteTodo"
       ></todos-list>
       <todo-form
-        v-else-if="selectedTab === 'add-todo'"
+        v-show="selectedTab === 'add-todo'"
         @save-data="(data) => addTodo(data)"
       ></todo-form>
     </div>

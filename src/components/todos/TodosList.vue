@@ -52,16 +52,16 @@ export default {
 
 <template>
   <todo-filter @change-filter="setFilters"></todo-filter>
-  <base-card v-if="!filteredTodos.length">
-    <h4>No Todos Found</h4>
+  <base-card>
+    <h4 v-if="!filteredTodos.length">No Todos Found</h4>
+    <div v-else>
+      <todo-item
+        v-for="todo in filteredTodos"
+        :key="todo.id"
+        :todo="todo"
+        @delete-todo="onDeleteTodo"
+        @update-todo="onUpdateTodo"
+      ></todo-item>
+    </div>
   </base-card>
-  <div v-else>
-    <todo-item
-      v-for="todo in filteredTodos"
-      :key="todo.id"
-      :todo="todo"
-      @delete-todo="onDeleteTodo"
-      @update-todo="onUpdateTodo"
-    ></todo-item>
-  </div>
 </template>
