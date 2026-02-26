@@ -64,6 +64,7 @@ export default {
     @save-data="onUpdate"
   ></todo-form>
 </template>
+
 <style scoped>
 .todo-item {
   padding: 1rem;

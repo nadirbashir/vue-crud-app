@@ -2,12 +2,14 @@
 import TheHeader from './components/layout/TheHeader.vue'
 import TodoForm from './components/todos/TodoForm.vue'
 import TodosList from './components/todos/TodosList.vue'
+import BaseButton from './components/ui/BaseButton.vue'
 
 export default {
   components: {
     TheHeader,
     TodosList,
     TodoForm,
+    BaseButton,
   },
   data() {
     return {
