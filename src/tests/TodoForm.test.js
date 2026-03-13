@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import TodoForm from '@/components/todos/TodoForm.vue'
 
@@ -68,7 +67,7 @@ describe('TodoForm', () => {
 
   it('calls closeEditMode if editing and closeEditMode is provided', async () => {
     const todo = { id: '1', title: 'Edit', description: 'Edit desc', priority: 'MEDIUM' }
-    const closeEditMode = vi.fn()
+    const closeEditMode = jest.fn()
     wrapper = mount(TodoForm, {
       props: { todo, closeEditMode },
       global: { components: { BaseButton, BaseCard, BaseDialog } },

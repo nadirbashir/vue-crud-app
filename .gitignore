@@ -32,7 +32,7 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
-# Vitest
+# jest
 __screenshots__/
 
 # Vite
