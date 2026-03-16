@@ -1,4 +1,6 @@
 <script>
+import { ref } from 'vue'
+
 export default {
   emits: ['save-data'],
   props: {
@@ -14,44 +16,51 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      title: this.$props.todo?.title || '',
-      description: this.$props.todo?.description || '',
-      priority: this.$props.todo?.priority || 'MEDIUM',
-      error: false,
-      isSaved: false,
-    }
-  },
-  methods: {
-    submitData() {
-      if (!this.title) {
-        this.error = true
+  setup(prop, context) {
+    const title = ref(prop.todo?.title || '')
+    const description = ref(prop.todo?.description || '')
+    const priority = ref(prop.todo?.priority || 'MEDIUM')
+    const error = ref(false)
+    const isSaved = ref(false)
+
+    function submitData() {
+      if (!title.value) {
+        error.value = true
         return
       }
       const formData = {
-        id: this.$props.todo?.id || new Date().toISOString(),
-        title: this.title,
-        description: this.description,
-        priority: this.priority,
+        id: prop.todo?.id || new Date().toISOString(),
+        title: title.value,
+        description: description.value,
+        priority: priority.value,
       }
 
-      this.$emit('save-data', formData)
+      context.emit('save-data', formData)
 
-      if (this.$props.todo && this.$props.closeEditMode) {
-        this.$props.closeEditMode()
+      if (prop.todo && prop.closeEditMode) {
+        prop.closeEditMode()
         return
       }
 
-      this.title = ''
-      this.description = ''
-      this.priority = 'MEDIUM'
-      this.isSaved = true
+      title.value = ''
+      description.value = ''
+      priority.value = 'MEDIUM'
+      isSaved.value = true
 
       setTimeout(() => {
-        this.isSaved = false
+        isSaved.value = false
       }, 1000)
-    },
+    }
+
+    return {
+      title,
+      description,
+      priority,
+      error,
+      isSaved,
+      submitData,
+      closeEditMode: prop.closeEditMode,
+    }
   },
 }
 </script>
@@ -91,11 +100,7 @@ export default {
         ></textarea>
       </div>
       <div class="form-actions">
-        <base-button
-          type="button"
-          v-if="this.$props.todo && this.$props.closeEditMode"
-          @click="closeEditMode"
-          mode="outline"
+        <base-button type="button" v-if="closeEditMode" @click="closeEditMode" mode="outline"
           >Cancel</base-button
         >
         <base-button :disabled="isSaved" :class="isSaved ? 'disabled' : ''">Save</base-button>

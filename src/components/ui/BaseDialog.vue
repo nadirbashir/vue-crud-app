@@ -1,5 +1,8 @@
 <script>
+import { computed } from 'vue'
+
 export default {
+  emits: ['close'],
   props: {
     show: {
       type: Boolean,
@@ -8,16 +11,26 @@ export default {
     title: {
       type: String,
       required: false,
+      default: 'Title default',
     },
   },
-  emits: ['close'],
+  setup(props, context) {
+    const handleClose = () => {
+      context.emit('close')
+    }
+
+    return {
+      title: props.title,
+      handleClose,
+    }
+  },
 }
 </script>
 
 <template>
   <teleport to="body">
-    <div v-if="show" @click="$emit('close')" class="backdrop"></div>
-    <transition name="">
+    <div v-if="show" @click="handleClose" class="backdrop"></div>
+    <transition>
       <dialog open v-if="show">
         <header>
           <slot name="header">
@@ -29,7 +42,7 @@ export default {
         </section>
         <menu>
           <slot name="actions">
-            <base-button @click="$emit('close')">Close</base-button>
+            <base-button @click="handleClose">Close</base-button>
           </slot>
         </menu>
       </dialog>

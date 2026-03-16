@@ -1,17 +1,26 @@
 <script>
+import { computed } from 'vue'
+
 export default {
   props: ['title'],
-  computed: {
-    text() {
-      return this.title.toUpperCase()
-    },
+  setup(props) {
+    const textUpperCase = computed(function () {
+      return props.title.toUpperCase()
+    })
+    const textLowerCase = computed(function () {
+      return props.title.toLowerCase()
+    })
+    return {
+      textUpperCase,
+      textLowerCase,
+    }
   },
 }
 </script>
 
 <template>
-  <span class="badge" :class="title.toLowerCase()">
-    {{ text }}
+  <span class="badge" :class="textLowerCase">
+    {{ textUpperCase }}
   </span>
 </template>
 

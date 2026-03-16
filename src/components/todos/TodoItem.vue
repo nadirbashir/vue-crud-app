@@ -1,39 +1,43 @@
 <script>
+import { ref } from 'vue'
 import TodoForm from './TodoForm.vue'
 
 export default {
   components: { TodoForm },
   props: ['todo'],
   emits: ['delete-todo', 'update-todo'],
-  data() {
-    return {
-      isEditMode: false,
-      showConfirmDelete: false,
+  setup(props, context) {
+    const isEditMode = ref(false)
+    const showConfirmDelete = ref(false)
+
+    function setShowConfirmDelete(flag) {
+      showConfirmDelete.value = flag
     }
-  },
-  methods: {
-    setShowConfirmDelete(flag) {
-      this.showConfirmDelete = flag
-    },
-    setEditMode() {
-      this.isEditMode = !this.isEditMode
-    },
-    onUpdate(updatedTodo) {
-      this.$emit('update-todo', updatedTodo)
-    },
-    onDelete(todoId) {
-      this.$emit('delete-todo', todoId)
-    },
+    function setEditMode() {
+      isEditMode.value = !isEditMode.value
+    }
+    function onUpdate(updatedTodo) {
+      context.emit('update-todo', updatedTodo)
+    }
+    function onDelete(todoId) {
+      context.emit('delete-todo', todoId)
+    }
+
+    return {
+      todo: props.todo,
+      isEditMode,
+      showConfirmDelete,
+      setShowConfirmDelete,
+      setEditMode,
+      onUpdate,
+      onDelete,
+    }
   },
 }
 </script>
 
 <template>
-  <base-dialog
-    :show="this.showConfirmDelete"
-    title="Title default"
-    @close="setShowConfirmDelete(false)"
-  >
+  <base-dialog :show="showConfirmDelete" title="Title default" @close="setShowConfirmDelete(false)">
     <template v-slot:header>
       <h3>Are you sure to delete?</h3>
     </template>

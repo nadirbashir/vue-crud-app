@@ -1,22 +1,22 @@
 <script>
+import { reactive, ref, watch } from 'vue'
+
 export default {
   emits: ['change-filter'],
-  data() {
+  setup(_, context) {
+    const showFilters = ref(false)
+    const title = ref('')
+    const priorities = ref([])
+
+    watch([title, priorities], function (values) {
+      const filters = { title: values[0], priorities: [...values[1]] }
+      context.emit('change-filter', filters)
+    })
     return {
-      showFilters: false,
-      title: '',
-      priorities: [],
+      showFilters,
+      title,
+      priorities,
     }
-  },
-  watch: {
-    title(val) {
-      const filters = { title: val, priorities: [...this.priorities] }
-      this.$emit('change-filter', filters)
-    },
-    priorities(values) {
-      const filters = { title: this.title, priorities: [...values] }
-      this.$emit('change-filter', filters)
-    },
   },
 }
 </script>
