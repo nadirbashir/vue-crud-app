@@ -16,7 +16,8 @@ describe('TodosList.vue', () => {
   })
 
   it('shows empty state when no todos match filter', async () => {
-    await wrapper.setData({ filters: { title: 'no-match', priorities: [] } })
+    wrapper.vm.setFilters({ title: 'no-match', priorities: [] })
+    await wrapper.vm.$nextTick()
     expect(wrapper.text()).toContain('No Todos Found')
   })
 
@@ -32,7 +33,8 @@ describe('TodosList.vue', () => {
   })
 
   it('filters todos by title and priority', async () => {
-    await wrapper.setData({ filters: { title: 'Test 1', priorities: ['HIGH'] } })
+    wrapper.vm.setFilters({ title: 'Test 1', priorities: ['HIGH'] })
+    await wrapper.vm.$nextTick()
     expect(wrapper.vm.filteredTodos.length).toBe(1)
     expect(wrapper.vm.filteredTodos[0].title).toBe('Test 1')
   })
